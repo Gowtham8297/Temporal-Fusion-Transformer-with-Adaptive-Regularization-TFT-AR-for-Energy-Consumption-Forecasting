@@ -1,0 +1,2 @@
+# Temporal-Fusion-Transformer-with-Adaptive-Regularization-TFT-AR-for-Energy-Consumption-Forecasting
+TFT-AR is a powerful model for time series forecasting that combines adaptive seasonality modeling, event-focused attention, and intelligent regularization. Its design addresses the specific challenges of energy consumption forecasting, such as changing seasonal patterns, impact of events, and the risk of overfitting. 
