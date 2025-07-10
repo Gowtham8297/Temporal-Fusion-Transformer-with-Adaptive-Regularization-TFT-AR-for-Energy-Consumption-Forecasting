@@ -7,9 +7,8 @@ from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# =======================
+
 # 1. Data Preprocessing
-# =======================
 class EnergyDataset(Dataset):
     def __init__(self, df):
         self.X = df[[
@@ -26,9 +25,8 @@ class EnergyDataset(Dataset):
     def __getitem__(self, idx):
         return self.X[idx], self.t[idx], self.temp[idx], self.y[idx]
 
-# =======================
+
 # 2. TFT-AR Components
-# =======================
 class TemperatureGatedAFU(nn.Module):
     def __init__(self, num_harmonics=4, temp_embed_dim=10):
         super().__init__()
@@ -69,9 +67,7 @@ class EnergyEventAttention(nn.Module):
         selected_events = sparse_mask * attn_scores
         return self.event_embedder(selected_events)
 
-# =======================
 # 3. TFT-AR Model
-# =======================
 class TFTARModel(nn.Module):
     def __init__(self, input_dim):
         super().__init__()
@@ -86,9 +82,7 @@ class TFTARModel(nn.Module):
         output = baseline_component + temp_component + event_component
         return output, baseline_component, temp_component, event_component, season_raw, gate
 
-# =======================
 # 4. Training Function with Multi-Scale Regularization
-# =======================
 def train_model(model, dataloader, epochs=20, lambda_t=0.1, lambda_g=0.01):
     model.train()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
@@ -116,9 +110,8 @@ def train_model(model, dataloader, epochs=20, lambda_t=0.1, lambda_g=0.01):
         print(f"Epoch {epoch+1}: Loss = {train_losses[-1]:.4f}")
     return train_losses
 
-# =======================
+
 # 5. Prediction + Save Outputs
-# =======================
 def predict_and_append(df, model, scaler_energy):
     model.eval()
     dataset = EnergyDataset(df)
